@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>gallery</title>
+    <style>
+        .popcontainer{
+           
+            height: 100vh;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.349);
+            position: absolute;
+            text-align: center;
+            padding: 10% 0;
+            display: none;
+            box-sizing: border-box;
+
+
+       
+        }
+        #popimg{
+        max-width: 100%;
+        max-height: 100%;
+        }
+        .section{
+            width:80%;
+            display:flex;
+            justify-content: space-around;
+            overflow: hidden;
+        }
+        .section img{
+            width:33%;
+            height: 350px;
+        }
+        button {
+            padding: 10px;
+            border: none;
+           
+        }
+        .show{
+display: block;
+        }
+
+        .numbertext {
+    color: #f2f2f2;
+    font-size: 12px;
+    padding: 8px 12px;
+    position: absolute;
+    top: 0;
+    display: none;
+  }
+
+
+   /* Next & previous buttons */
+   .prev,
+  .next {
+    cursor: pointer;
+    position: absolute;
+    top: 40%;
+    width: auto;
+    padding: 16px;
+    margin-top: -50px;
+    color: black;
+    font-weight: bold;
+    font-size: 20px;
+    border-radius: 0 3px 3px 0;
+  }
+  
+  .prev {
+   
+    margin-left: -43px;
+  }
+
+  
+  .close{
+    position: absolute;
+    margin-left: -31px;
+    background-color: black;
+    color: white;
+  }
+  
+        </style>
+</head>
+<body>
+    <div class="popcontainer" id="popup">
+        <button class="prev" onclick="previous()">&#10094;</button>
+
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSC5zVFxq27khmtgUssrgAK5Zy_XAH1Z2DqrA&usqp=CAU " id="popimg">
+        <button class="next"   onclick="next()">&#10095;</button>
+        <button class ="close" onclick="popwindow()">X</button>
+    </div>
+    <div class="section">
+<img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxASDxUSEhAVFRUVFRUVFRUVFRcVFRUVFRUWFxUVFRUYHSggGBolGxUVITEhJSkrLi4uFx81ODMtNygtLisBCgoKDQ0NDw0NDislFRktKysrLSs0LS0rKysrLTcrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrK//AABEIALIBGwMBIgACEQEDEQH/xAAcAAEAAQUBAQAAAAAAAAAAAAAAAQIEBQYHAwj/xABGEAACAQICBgUHCgUBCQEAAAAAAQIDEQQhBQYSMUFhIlFxgZEHExQjMlKSQlNicoKhorHB0RYzVJPS4RU0RIOjstPw8ST/xAAVAQEBAAAAAAAAAAAAAAAAAAAAAf/EABURAQEAAAAAAAAAAAAAAAAAAAAR/9oADAMBAAIRAxEAPwDuIAAAADwx1WUKU5xjtSjCUox95qLaj3vI5disXUrdOdWU757+jZ7tmO5LsOsHL9YdG+i4pwS9XNOdLqUb9OH2ZNfZnBdYGN3cX4hVJe9L4mTVR53IPXz8/nJ/HL9yfSqvztT+5P8Ac8SALj06vwr1v7s/3Kv9pYn+pr/3qn+Ra3IAvFpbEr/ia392b/NlX+28X/U1fiZYNkXAyK09jP6mp4p/oVfxFjV/xM/CH6xMWRcDLLWbHf1Mvhp/4krWrHf1L+Cl/gYchsDNLW3HfP8A/Tp/4lS1xx3zsX2wj+iMC2QwNg/jXHe/D+2v3J/jnGr5p9tN/pI1xlLA2b+PMb1Ufgl/mT/H+M9yh8E//IasyhgbdDyh4pPOlRa6kpx+/advA3HVrWOljIPZWxUj7dNu7V9zT+VHn42OPMuNGaQqYetGtTfSi93CUX7UJcmv0fADuYLTRekKeIowrU3eM1fmnucXzTun2F2UAAAAAAAAAAAAAAAADEa0aI9Jw7ireci9uk3u20nk3wUk3F8pX3pGXAHHaU9qNmmmrpp5NNOzTXBp3TXWjzkjY9eNF+ZrqvBdCs7S6o1UvuU4q/bF8ZGv1M1dEHmwQRcCQQQBJBFxcAQGyGAZDFyAIZDBAEMpJIYFLKWVMpYFLKWSylgbNqHrB6NX81UfqarW/dCo7JT5J5J9z4M6wfP0kdR8nusPn6Xo9SV6tJZN7501kpc2sk+58SjcAAAAAAAAAAAAAAAAAABaaV0fDEUJ0Z+zNWut8Ws4yjzUkmuaRyeVKdOc6NRWnCTjLqus7rk01JcpI7GaV5Q9EZLFwWcEoVedO/Rn9lt35SbfsoDTJqxSejd1c8SCRci5FwJIbIFwJZTcEAGQLkNgCA2Q2BDIYKWAZSyWylsCGUsllLAhnrgMbOhVhVpu04O66n1xfJq6faeLKGB3XQmlKeKoQrU90lnHjCS9qD5p/vxL847qPrD6JiNmb9TVaU+qEt0an6Pln8k7EUAAAAAAAAAAAAAAAACirTjKLjJJxkmmnmmmrNNdVisAcg0ro+WFxM6DbcVnTk/lU5X2G3xas4vnG/FFpUR0bXnQrxGH24RvVo3lBLfOLt5ymu1JNfSjE5vSqKUU73yTv1p7miCki4ZDYEkNkXFwJIIIAm5SGyAJuUsNlIBsusVo2vTjtVKNSMbJ7Tg9nPd0tyNl8neFp1ZYmE1fapKC69ibkqlvCH3Ge1Y09SjThg687V6cnQs4y2ZbMnGHSts5pJK7zA5eyGZfXXHYCEvOUadWk1PZqRcIqkldxc0tq8bSsnZWz3KzMOBDKWSykCGUsllLApZ07ybax+dp+i1Zespq9Nv5dNcO2OS7LdTOYM9MLip0qkatOWzOElKL6muvrTzTXFNoD6EBjNXNMwxeHjWhk3lOO9wmvai/zXWmnxMmUAAAAAAAAAAAAAAAADlWuOifRcXtRXqqzlOPVGe+pDlm9pdsksonVTF6yaIjisNKk7KXtU5P5FSPsy7OD602uIHJqi4nlcqpOSvCcXGUW4yi98ZRdpRfY00UyRAIuRci4E3BBS2BVcgi5FwJuUhsi4GT1d0q8LiYVd8fZmlvcJb7c1ZPtRseuWIo0XWrSqqFHE0I1qdW+SxFBx83svhtJxXNs0i5ZawQxFfC+jwruMY7bUGk4PbttJ5Nx3cOLeWYFnpLEzxWKqVKlNbU6tbD1404u3m6vTpTSV2krrN9bZaao4yWzPDVH06EnFc4JtW7mrdjRhtFLEqvUoYhzjKvT2Izk37cFem1NPNLNZPiRqNQqekzm07RhKMm/eco9F88m+4o3llLZLKWQQylkspYEMpZLIYGe1L1heDxN5P1NS0aq6vdqLnG+fJvjY7XGSaundPNNbmj50Z0ryYaybUfQqsulFN0G+MFvp9sd6+j9Uo6EAAAAAAAAAAAAAAAAAAOc+UjQ/m6kcZBdGbjCtynlGnN/WVoPmodbNUk01dHacfg4VqU6VRXhOLjJbsmuD4PqfBnGMThZ4evPD1Pag7XtZSi84zXKSaeW53XAg8CCqoigCbkEXIuBNyLkXIuBJDYuRcBcgFLAMgNkMCGQwyGAZQyplLAgpZLIYFLZVQrzpzjOEnGcJKUZLemndP/AEKGQB3fVXTsMbho1VZTXRqQ9ya3rseTXJozBwnVHWB4LEqpm6UrRrRWd48JJcZRbbXJyXE7nSqRlFSi04yScWndNNXTT4qxRWAAAAAAAAAAAAAAAAaV5StCecorFU106C6dt8qO9/A+l2bfFm6kNXyYHCoy2onmzJax6I9CxcqSXqp3nRf0G/Y+w3s9jg3vMfVRBRcgEXAm5FyCLgSQQRcCSGyGxcCAQQAZAZDAhkMMhgQyGSylgQykkgCGdG8lustn6FVl1ug34ypfnJfaXBI5wyYTlGSlGTjKLUoyW+Mk7prmmkwPpEGA1L1hjjcMpuyqw6NWK4St7SXuyWa71wZnygAAAAAAAAAWuI0jQp5Tqwi+pyV/DeBdAwtbWjDR3SlP6sX+crGIxWvdNNxjBJ/Sln8K/cDcQcxx+v8AUu0qsIv3YJOXw9KRr2P1lr1d7qzT95tL4ZtfkB0Lyg0MPXwri61ONam9uknNXcks4W32krrk9l8DmGGqqcO5eBY4jFVpe7Hvcvy2f1PDAV3Cey3e92uGe+S/XxAykik9J9Z5EC4uQRcCSCLhgCLhkNgCAQAuQGQwIIZJAEMhkspAghkkMCGUsqZSBldVdPTwWKjWV3B9GrFfKpt52XvR3rvXFneqFaM4RnCSlGSUoyW5xaumuTTPnKnRlLcm+w7BqXgcdTwFGDlGFlK0Zq8lF1JOKeXutZcFYo3EHLNZtbtJLEVaVGdOlGFScF0PWWi2k3Ke1HNWe5b0abpDSOkav86vXmuKU3sfDB7P3Ad4x2l8NR/m4ilT5TnGL7k3dmBxflC0fD2ak6jXCnB/dKeyn4nEKaS4F1TZR07E+Uu/8rDd9SdvwxT/ADMdX13xs904U/qQX5z2jS6ci6pyEGbraVr1P5lacuTk7fDuKYVDHQmV+eSIMl54oqVL5P7zHSxqR4yxcnuiwL6ajb2V3K35FliNjs7ywnjtp22vhTkl2uN0i1r4in89Fv3Vdya5RjmB64mcV8oxtabe7es0+aPZVLp+pe7JtuK8GtpeBa1lUWcp04R5z48pVLL7gM/o/EbcVwfV1Pij0mjXNEY1KWU5TUnbaay2lks0kuWXLqNlburkHlcEMgCSGQADZAIAlshhkACA2RcAQQ2Q2BNym5VCDe5XPSGGu0r3byUYrak+SSA8LlUKcpbk2bVorUnGVbNUFTj71d7L7qaTlftSNv0b5O6EbOvVnVfux9VT8Iva/EBy2lgm5KN7ye6ME5yfYkbLovUbGVM/MKmverys+6EU2n2pHV9H6MoUI7NGlCmuOzFJvte995dlGnaC1Cp0mp16rrTUlJKK83TjZppbKd3a3F59XA3EADG6Y0Fh8SrVaab4TXRnHskuHJ3XI0bSvk+xMHfD1IVY+7P1dRfaScZP4TpYA4XpHAV6P+8YepTS4zhtQX/NV4fiLBUqbV0u+L/+o+gzEY/VjA1m3Uw1Pae+cV5ub7ZwtL7wOJeZXBvvX6r9iuEea8TpOP8AJvQld0a9Sm+CmlUiv+2XjJmvY7UDHQvsKnVXDYlsy74zsl8TA11R52PHFUJ2ThZ9aeWXJo9sfgMTQ/m0alPnKMlH4vZfiYarpepToyqTpZxb6O0rNKVlJSXWmmB71cTVgn/+VyfUpK3j/oWV4TktqpGnbctmWXx9H8Fz00brTRrSUEpRk72vZp2Tb3PLJPfYvYY7D1clOEn1XV+9cAMY5wlfZqVMQuqS2ofVWcaX5suJyxCilGhTpxt13fK1PJPhukXFXR9J5qNuccvyLHEaLu7+ck0vkyd4P60eIHjOtTzVStO6SbhBWa3/ADfSXiy2hJe1Soq7S6crRv2vOfii7fnacWo06fKysvC1kWM9qWdWTT4qMUo/Fm/BoCnFKb6U6kIq1ujFRffKV19xn9DY1VIe0m1k2tz6pd/53NcrOip9CMp1Lb9+XLbyXieuGx3mpqVSVOCvbZ2r1GnbeorKzzz523gbVNFB6J3VzyZAFyGym4FTIZQ5FLmB6NlLkUK7JsrpN5vJJZtvqQByJjFvcjYNFanY6vZxw/m4v5dd7C+G21+E3DRnk0pKzxNedR+5D1cOxvOT7U4gcxjSzSbzeSjHNt9SXWbHorUzG1rOOH83H3672PwZy+46zozQ2Gw6tRoQh1tLpP603m+9l+UaNo3ycUVZ4itOq/dh6uHZk3J9zRtmjtE4fDq1GjCn1uMUm/rS3vvL0AAAAAAAAAAAAAAAAAGjC6T1T0fiE1VwlKV97UdlvtlGzZmgBznG+R/AOaqYeUqM1fZyU4q/0cnxfE0fTXkSxiu6NeNTlkvwyslw4s78APmjT+gdI0Iq1OpTlHZV5RtCVlnaT6GfbwXWWWjMbjdvZrwTik/WWTTd4pWknsvfusvzPqRmI0hqzga2dTDU238pLYl8cLP7wPmqOtVHacalKUWm03F7Syf/ALwMlh50q0NunO6d1nF71vXX9x0vTvkS0dXzpVKtB/R2ZxfamtpvntGGj5KMXhoOFCcK0Ltq8tieduEko/iA0ito98Epdjz8HmYvE0VTbbpWb4uJs+n9XNI06ckqNWnJWak4twyea85FOK8eBRTm2t/bbdfiBYauaTU06T9qPsrrhy7N3ZYy9RnjS0fSclPzcVJZqSWy0+1HvWqL5S3cUQeEplN2ZfRWrONxWdChaPzlToQtyb9r7KZuWi/JfHJ4rEOX0KS2Y9jnK7a7FEDmja4vu59RntFao4/EWcMM4Rfy63q122fSa5qLOv6J1dweG/k4eEXu27bU32zleT8TKFHPdF+TCmrPE4iU37lNbEexyd5PtWybjorQWFwy9RQhB7tpK832zd5PvZkQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAw+sGi8POlKU6FKUlulKnGT8WrgAcqxVKMcQkopK+5JJeB0TU/RtDYc/MU9tNWlsR2l2StcAg2kAFAAAAAAAAAAAAAAAAAAAAAB//2Q==" onclick="imgpop(this)">
+
+<img src="https://image.shutterstock.com/image-photo/pallas-yllastunturi-national-park-mountains-260nw-1823020226.jpg"onclick="imgpop(this)">
+
+
+<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSC5zVFxq27khmtgUssrgAK5Zy_XAH1Z2DqrA&usqp=CAU "onclick="imgpop(this)" >
+</div>
+<div class="section">
+
+<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBP81DLcOuxsDEpIhoMuCUPpILHbBO3Y9VJw&usqp=CAU"onclick="imgpop(this)">
+
+   
+    </div>
+    <script>
+        function imgpop(ele){
+            document.querySelector('#popimg').src=ele.src;
+            document.querySelector("#popup").classList.add("show");
+
+        }
+
+
+
+        function  previous(){
+            let a = document.images;
+            let imgpath = document.querySelector('#popimg');
+
+            for (let index = 1; index < a.length; index++) {
+
+                if (imgpath.src === a[index].src) {
+                  
+                    if (index >= 1) {
+                        imgpath.src = a[--index].src;
+                        break;
+
+                    }
+
+
+                }
+
+            }
+
+        }
+
+          
+        function next()  {
+            
+
+        let a = document.images;
+            let imgpath = document.querySelector('#popimg');
+
+            for (let index = 1; index < a.length; index++) {
+
+                if (imgpath.src == a[index].src) {
+                   
+                    if (index <= a.length) {
+                        imgpath.src = a[++index].src;
+                        break;
+                    }
+
+
+                }
+
+            }
+
+        }
+        function popwindow(){
+            document.querySelector("#popup").classList.remove("show")
+        }
+    </script>
+</body>
+</html>
